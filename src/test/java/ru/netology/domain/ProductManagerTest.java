@@ -13,30 +13,27 @@ public class ProductManagerTest {
 
 
     @Test
-    public void shouldAddAllProducts() {
+    public void shouldFindById() {
         manager.add(first);
         manager.add(second);
         manager.add(third);
         manager.add(fourth);
-        Product[] actual = manager.findAll();
-        Product[] expected = new Product[]{first, second, third, fourth};
-        assertArrayEquals(actual, expected);
+        int idToFind = 101;
+        Product actual = manager.findById(idToFind);
+        Product expected = second;
+        assertEquals(actual, expected);
     }
 
     @Test
-    public void shouldAddFirstAndLastProducts() {
+    public void shouldFindNothingById() {
         manager.add(first);
+        manager.add(second);
+        manager.add(third);
         manager.add(fourth);
-        Product[] actual = manager.findAll();
-        Product[] expected = new Product[]{first, fourth};
-        assertArrayEquals(actual, expected);
-    }
-
-    @Test
-    public void shouldAddNoProducts() {
-        Product[] actual = manager.findAll();
-        Product[] expected = new Product[0];
-        assertArrayEquals(actual, expected);
+        int idToFind = 110;
+        Product actual = manager.findById(idToFind);
+        Product expected = null;
+        assertEquals(actual, expected);
     }
 
     @Test
@@ -53,36 +50,15 @@ public class ProductManagerTest {
     }
 
     @Test
-    public void shouldFindOneByText() {
+    public void shouldCheckNotFoundExceptionForWrongId() {
         manager.add(first);
         manager.add(second);
         manager.add(third);
         manager.add(fourth);
-        Product[] actual = manager.searchBy("код");
-        Product[] expected = new Product[]{second};
-        assertArrayEquals(actual, expected);
-    }
 
-    @Test
-    public void shouldFindTwoByText() {
-        manager.add(first);
-        manager.add(second);
-        manager.add(third);
-        manager.add(fourth);
-        Product[] actual = manager.searchBy("App");
-        Product[] expected = new Product[]{third, fourth};
-        assertArrayEquals(actual, expected);
-    }
-
-    @Test
-    public void shouldFindNothingByText() {
-        manager.add(first);
-        manager.add(second);
-        manager.add(third);
-        manager.add(fourth);
-        Product[] actual = manager.searchBy("Z");
-        Product[] expected = new Product[0];
-        assertArrayEquals(actual, expected);
+        assertThrows(NotFoundException.class, () -> {
+            manager.removeById(120);
+        });
     }
 
 }

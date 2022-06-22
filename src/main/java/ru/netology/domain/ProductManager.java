@@ -14,33 +14,29 @@ public class ProductManager {
         return products;
     }
 
-    public void removeById(int id) {
-        Product[] tmp = new Product[products.length - 1];
-        int index = 0;
+    public Product findById(int id) {
         for (Product product : products) {
-            if (product.getId() != id) {
-                tmp[index] = product;
-                index++;
+            if (product.getId() == id) {
+                return product;
             }
         }
-        products = tmp;
+        return null;
     }
 
-    public boolean matches(Product product, String search) {
-        return product.getName().contains(search);
-    }
-
-    public Product[] searchBy(String text) {
-        Product[] result = new Product[0];
-        for (Product product : findAll()) {
-            if (matches(product, text)) {
-                Product[] tmp = new Product[result.length + 1];
-                System.arraycopy(result, 0, tmp, 0, result.length);
-                tmp[tmp.length - 1] = product;
-                result = tmp;
+    public void removeById(int id) {
+        if (findById(id) == null) {
+            throw new NotFoundException("Element with id " + id + " is not found");
+        } else {
+            Product[] tmp = new Product[products.length - 1];
+            int index = 0;
+            for (Product product : products) {
+                if (product.getId() != id) {
+                    tmp[index] = product;
+                    index++;
+                }
             }
+            products = tmp;
         }
-        return result;
     }
 
 }
