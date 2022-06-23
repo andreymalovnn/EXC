@@ -80,7 +80,7 @@ public class ProductManagerTest {
         manager.add(fourth);
 
         assertThrows(AlreadyExistsException.class, () -> {
-            manager.findById(101);
+            manager.add(first);
         });
     }
 
