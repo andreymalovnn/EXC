@@ -61,4 +61,27 @@ public class ProductManagerTest {
         });
     }
 
+    @Test
+    public void shouldAddAllProducts() {
+        manager.add(first);
+        manager.add(second);
+        manager.add(third);
+        manager.add(fourth);
+        Product[] actual = manager.findAll();
+        Product[] expected = new Product[]{first, second, third, fourth};
+        assertArrayEquals(actual, expected);
+    }
+
+    @Test
+    public void shouldCheckAlreadyExistsException() {
+        manager.add(first);
+        manager.add(second);
+        manager.add(third);
+        manager.add(fourth);
+
+        assertThrows(AlreadyExistsException.class, () -> {
+            manager.findById(101);
+        });
+    }
+
 }
